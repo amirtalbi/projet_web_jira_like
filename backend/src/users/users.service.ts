@@ -19,8 +19,8 @@ export class UsersService {
         return user;
     }
 
-    findOne(findUserDto: FindUserDto): Promise<User | null> {
-        const user = this.userModel.findOne({ email: findUserDto});
+    async findOne(findUserDto: FindUserDto): Promise<User | null> {
+        const user = await this.userModel.findOne({ email: findUserDto});
         if(!user) {
             return null;
         }

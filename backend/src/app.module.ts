@@ -15,7 +15,7 @@ import { JwtServiceModule } from './jwt-service/jwt-service.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI),
+    MongooseModule.forRoot(process.env.MONGO_URI), // Utilisation de la variable d'environnement
     AuthModule,
     UsersModule,
     ProjectsModule,
