@@ -11,6 +11,8 @@ export class Project {
   @Prop()
   description: string;
 
+  taks: []
+
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   ownerId: Types.ObjectId;
 
