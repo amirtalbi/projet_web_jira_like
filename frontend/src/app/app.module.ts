@@ -9,21 +9,29 @@ import {
 } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { fr_FR, NZ_I18N } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { FilterTasksPipe } from './pipes/filter-tasks.pipe';
 
 registerLocaleData(fr);
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HomeComponent, FilterTasksPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     NzLayoutModule,
     NzMenuModule,
+    NzSelectModule,
+    NzIconModule,
+    NzInputModule,
   ],
   providers: [
     provideClientHydration(),
