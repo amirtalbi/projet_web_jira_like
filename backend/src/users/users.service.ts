@@ -13,15 +13,15 @@ export class UsersService {
         private readonly userModel: Model<UserDocument>,
     ) {}
 
-    async create(createUserDto: CreateUserDto): Promise<User> {
+    async create(createUserDto: CreateUserDto): Promise<UserDocument> {
         const { username, email, password } = createUserDto;
         const user = new this.userModel({ username, email, password });
-        return user;
+        return user.save();
     }
 
-    async findOne(findUserDto: FindUserDto): Promise<User | null> {
-        const user = await this.userModel.findOne({ email: findUserDto});
-        if(!user) {
+    async findOne(findUserDto: FindUserDto): Promise<UserDocument | null> {
+        const user = await this.userModel.findOne({ email: findUserDto.email }).exec();
+        if (!user) {
             return null;
         }
         return user;
