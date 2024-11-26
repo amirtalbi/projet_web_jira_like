@@ -2,7 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import fr from '@angular/common/locales/fr';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   BrowserModule,
   provideClientHydration,
@@ -19,16 +19,22 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { FilterTasksPipe } from './pipes/filter-tasks.pipe';
 
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { AuthComponent } from './auth/login/auth.component';
 registerLocaleData(fr);
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, FilterTasksPipe],
+  declarations: [AppComponent, HomeComponent, FilterTasksPipe,AuthComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
+    ReactiveFormsModule,
     NzLayoutModule,
     NzMenuModule,
+    NzFormModule,
+    NzMenuModule,
+    NzButtonModule,
     NzSelectModule,
     NzIconModule,
     NzInputModule,
