@@ -5,6 +5,7 @@ export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
+  [x: string]: any;
   @Prop({ required: true, unique: true })
   username: string;
 
@@ -13,9 +14,6 @@ export class User {
 
   @Prop({ required: true })
   password: string;
-
-  @Prop({ type: Object, default: {} })
-  preferences: Record<string, any>;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

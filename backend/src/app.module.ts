@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { ProjectsModule } from './projects/projects.module';
 import { TaskModule } from './task/task.module';
 import { SubtaskModule } from './subtask/subtask.module';
+import { JwtServiceModule } from './jwt-service/jwt-service.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { SubtaskModule } from './subtask/subtask.module';
     ProjectsModule,
     TaskModule,
     SubtaskModule,
+    JwtServiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
