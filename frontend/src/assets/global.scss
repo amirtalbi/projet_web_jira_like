@@ -47,18 +47,27 @@ $flex-alignment: center;
     justify-content: $flex-alignment;
     align-items: $flex-alignment;
 }
+
 .text-center {
     text-align: center;
 }
+
 .btn{
     border-radius: 10px;
     padding: 10px;
 }
-.btn-primary{
+
+.btn-primary,.btn-primary:focus{
     background-color: #4A15A3;
     color: white;
     border: none;
 }
+
+.btn-primary:hover{
+    background-color: #614f7f;
+    color: white;
+}
+
 .input{
     border-radius: 10px;
     padding: 10px;
