@@ -2,7 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import fr from '@angular/common/locales/fr';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import {
   BrowserModule,
   provideClientHydration,
@@ -21,7 +21,9 @@ import { FilterTasksPipe } from './pipes/filter-tasks.pipe';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { AuthComponent } from './auth/login/auth.component';
+import { AuthComponent } from './auth/auth.component';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+
 registerLocaleData(fr);
 
 @NgModule({
@@ -38,6 +40,7 @@ registerLocaleData(fr);
     NzSelectModule,
     NzIconModule,
     NzInputModule,
+    NzButtonModule,NzAvatarModule
   ],
   providers: [
     provideClientHydration(),

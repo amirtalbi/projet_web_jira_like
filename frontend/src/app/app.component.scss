@@ -1,9 +1,6 @@
 .logo {
   width: 120px;
-  height: 31px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px 24px 16px 0;
-  float: left;
+  margin-inline: 10px;
 }
 
 nz-layout {
@@ -17,9 +14,19 @@ nz-layout {
 nz-content {
   padding: 10px 30px;
 }
+nz-header{
+    padding: 0 !important;
+    background: #fff;
 
+}
 .inner-content {
   background: #fff;
   padding: 24px;
   min-height: 280px;
+}
+.create-btn{
+  margin-inline:15px ;
+}
+.avatar{
+  margin-right: 15px;
 }
