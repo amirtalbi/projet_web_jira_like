@@ -1,12 +1,21 @@
 <nz-layout>
-  <nz-header>
-    <div class="logo" routerLink="/home"></div>
-    <ul nz-menu nzTheme="dark" nzMode="horizontal">
-      <li nz-menu-item routerLink="/home">Accueil</li>
-      <li nz-menu-item>nav 2</li>
-      <li nz-menu-item>nav 3</li>
-    </ul>
-  </nz-header>
+  @if(showNavbar){
+    <nz-header>
+      <div nz-row nzAlign="middle" nzJustify="space-between">
+        <div nz-col>
+          <ul nz-menu nzTheme="light" nzMode="horizontal">
+            <img src="../assets/img/logo/logo.png" alt="" class="logo">
+            <li nz-menu-item>Projets</li>
+            <li nz-menu-item>Tabs</li>
+          </ul>
+        </div>
+        <div nz-col nzAlign="middle">
+          <button nz-button class="btn-primary create-btn">Créer</button>
+          <nz-avatar nzSize="large" src="../assets/img/avatar.jpg" class="avatar"></nz-avatar>
+        </div>
+      </div>
+    </nz-header>
+  }
   <nz-content>
     <router-outlet></router-outlet>
   </nz-content>
