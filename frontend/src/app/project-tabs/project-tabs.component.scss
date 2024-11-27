@@ -7,7 +7,44 @@ app-project-tabs {
     justify-content: space-between;
 
     .header-table-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       margin-bottom: 15px;
+
+      .left {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .horizontal-container {
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        height: 50px;
+      }
+
+      .search-bar,
+      .filter {
+        flex: 1;
+        margin: 0 10px;
+
+        nz-select {
+          margin-left: 10px;
+          width: 50%;
+        }
+      }
+
+      .filter {
+        display: flex;
+        align-items: baseline;
+        justify-content: end;
+      }
+
+      .search-bar input {
+        width: 100%;
+        padding: 5px;
+      }
     }
 
     .table-container {

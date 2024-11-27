@@ -24,6 +24,7 @@ export class AppComponent {
   }
 
   public updateSelectedProject(project: Project): void {
-    this.taskService.selectedProject$.next(project);
+    this.taskService.selectedProject = project;
+    this.taskService.projectTaskFiltered = project;
   }
 }

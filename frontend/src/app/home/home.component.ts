@@ -10,7 +10,7 @@ import {
   distinctUntilChanged,
   filter,
   Subject,
-  takeUntil
+  takeUntil,
 } from 'rxjs';
 import { Priority, Task, TaskType } from '../models/task.model';
 import { TaskService } from '../services/task.service';
@@ -67,8 +67,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getValue()
       .find((project) => project.id === id);
     const selectedTaskByUser = this.getTaskByUserId(selectedProject.tasks);
-    this.taskService.selectedProject$.next(selectedProject);
-    this.taskService.userSelectedTask$.next(selectedTaskByUser);
+    this.taskService.selectedProject = selectedProject;
+    this.taskService.userSelectedTask = selectedTaskByUser;
+    this.taskService.projectTaskFiltered = selectedProject;
   }
 
   public getIconByTaskType(type: TaskType): string {
@@ -88,19 +89,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else if (typeof filter === 'number') {
       this.filterTasksByPriority(fullUserTaskList, filter);
     } else {
-      this.taskService.userSelectedTask$.next(fullUserTaskList);
+      this.taskService.userSelectedTask = fullUserTaskList;
     }
   }
 
   private filterTasksByPriority(tasks: Task[], priority: Priority): void {
-    this.taskService.userSelectedTask$.next(
-      tasks.filter((task) => task.priority === priority)
+    this.taskService.userSelectedTask = tasks.filter(
+      (task) => task.priority === priority
     );
   }
 
   private filterTasksByType(tasks: Task[], type: TaskType): void {
-    this.taskService.userSelectedTask$.next(
-      tasks.filter((task) => task.type === type)
+    this.taskService.userSelectedTask = tasks.filter(
+      (task) => task.type === type
     );
   }
 
@@ -110,8 +111,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private reset(): void {
     this.disabled$.next(false);
-    this.taskService.selectedProject$.next(null);
-    this.taskService.userSelectedTask$.next([]);
+    this.taskService.selectedProject = null;
+    this.taskService.projectTaskFiltered = null;
+    this.taskService.userSelectedTask = [];
     this.currentSelectedProject = null;
     this.currentSelectedFilter = null;
     this.searchTerm = '';

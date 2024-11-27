@@ -13,10 +13,21 @@ import {
 })
 export class TaskService {
   public projects$: BehaviorSubject<Project[]>;
+  get projects(): Project[] {
+    return this.projects$.getValue();
+  }
+
+  set projects(projects: Project[]) {
+    this.projects$.next(projects);
+  }
 
   public selectedProject$: BehaviorSubject<Project>;
   get selectedProject(): Project {
     return this.selectedProject$.getValue();
+  }
+
+  set selectedProject(project: Project) {
+    this.selectedProject$.next(project);
   }
 
   public userSelectedTask$: BehaviorSubject<Task[]>;
@@ -24,10 +35,26 @@ export class TaskService {
     return this.userSelectedTask$.getValue();
   }
 
+  set userSelectedTask(tasks: Task[]) {
+    this.userSelectedTask$.next(tasks);
+  }
+
+  public projectTaskFiltered$: BehaviorSubject<Project>;
+  get projectTaskFiltered(): Project {
+    return this.projectTaskFiltered$.getValue();
+  }
+
+  set projectTaskFiltered(project: Project) {
+    this.projectTaskFiltered$.next(project);
+  }
+
+  private userId = 1;
+
   constructor() {
     this.projects$ = new BehaviorSubject<Project[]>([]);
     this.userSelectedTask$ = new BehaviorSubject<Task[]>([]);
     this.selectedProject$ = new BehaviorSubject<Project>(null);
+    this.projectTaskFiltered$ = new BehaviorSubject<Project>(null);
 
     // use service
     this.projects$.next([
@@ -186,7 +213,7 @@ export class TaskService {
     if (!this.selectedProject) {
       return [];
     } else {
-      return this.selectedProject.tasks.filter(
+      return this.projectTaskFiltered.tasks.filter(
         (task) => task.status === status
       );
     }
@@ -212,5 +239,9 @@ export class TaskService {
       case Priority.Low:
         return 'icons:icon-low-priority';
     }
+  }
+
+  public getTaskByUserId(tasks: Task[]): Task[] {
+    return tasks.filter((task) => task.assignedTo === this.userId);
   }
 }
