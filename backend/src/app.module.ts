@@ -10,6 +10,7 @@ import { TaskModule } from './task/task.module';
 import { SubtaskModule } from './subtask/subtask.module';
 import { JwtServiceModule } from './jwt-service/jwt-service.module';
 import { AuthMiddleware } from './auth/auth.middleware';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuthMiddleware } from './auth/auth.middleware';
     TaskModule,
     SubtaskModule,
     JwtServiceModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
