@@ -2,10 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import cors from 'cors';
 
 async function bootstrap() {
   const host = process.env.HOST ?? '0.0.0.0';
   const app = await NestFactory.create(AppModule);
+
+  app.use(cors());
 
   const config = new DocumentBuilder()
     .setTitle('API')

@@ -4,14 +4,29 @@ import { Model } from 'mongoose';
 import { Task, TaskDocument } from './schemas/task.schema';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { NotificationsGateway } from 'src/notifications/notifications.gateway';
 
 @Injectable()
 export class TaskService {
-  constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
+  constructor(
+    @InjectModel(Task.name) private taskModel: Model<TaskDocument>,
+    private readonly notificationsService: NotificationsService,
+    private readonly notificationsGateway: NotificationsGateway,
+  ) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
     const createdTask = new this.taskModel(createTaskDto);
-    return createdTask.save();
+    const task = await createdTask.save();
+
+    await this.notificationsService.sendEmail(
+      'destinataire@example.com',
+      'Nouvelle tâche créée',
+      `La tâche "${task.title}" a été créée.`,
+    );
+
+    this.notificationsGateway.notifyTaskAdded(task);
+    return task;
   }
 
   async findAll(): Promise<Task[]> {
@@ -27,10 +42,20 @@ export class TaskService {
   }
 
   async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    const updatedTask = await this.taskModel.findByIdAndUpdate(id, updateTaskDto, { new: true }).exec();
+    const updatedTask = await this.taskModel
+      .findByIdAndUpdate(id, updateTaskDto, { new: true })
+      .exec();
     if (!updatedTask) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
+
+    await this.notificationsService.sendEmail(
+      'destinataire@example.com',
+      'Statut de tâche mis à jour',
+      `La tâche "${updatedTask.title}" a été mise à jour.`,
+    );
+
+    this.notificationsGateway.notifyTaskStatusChanged(updatedTask);
     return updatedTask;
   }
 
