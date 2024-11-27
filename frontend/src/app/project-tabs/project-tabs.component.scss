@@ -1,0 +1,56 @@
+app-project-tabs {
+  .project-tab-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .header-table-container {
+      margin-bottom: 15px;
+    }
+
+    .table-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+      border: 1px solid #dcdcdc;
+      padding: 10px 20px;
+      border-radius: 10px;
+
+      .column {
+        width: 31%;
+        > span {
+          font-size: 18px;
+          font-weight: bold;
+        }
+        .task-list {
+          border-radius: 10px;
+          overflow-y: auto;
+          width: 100%;
+          height: 95%;
+          border: 1px solid #dcdcdc;
+          padding: 10px;
+
+          .card {
+            width: 100%;
+            height: 60px;
+            border: 1px solid #b7c5ca;
+            display: flex;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #b7c5ca;
+            padding: 12px 12px;
+            align-items: center;
+            justify-content: space-between;
+
+            [nz-icon] {
+              font-size: 24px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

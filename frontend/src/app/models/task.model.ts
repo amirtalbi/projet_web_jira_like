@@ -10,6 +10,7 @@ export interface Task {
   title: string;
   priority: Priority;
   assignedTo: number;
+  status: TaskStatus;
 }
 
 export enum TaskType {
@@ -22,4 +23,10 @@ export enum Priority {
   High,
   Medium,
   Low,
+}
+
+export enum TaskStatus {
+  ToDo,
+  InProgress,
+  Done,
 }

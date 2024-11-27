@@ -23,11 +23,12 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { AuthComponent } from './auth/auth.component';
+import { ProjectTabsComponent } from './project-tabs/project-tabs.component';
 
 registerLocaleData(fr);
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, FilterTasksPipe, AuthComponent],
+  declarations: [AppComponent, HomeComponent, FilterTasksPipe, AuthComponent, ProjectTabsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

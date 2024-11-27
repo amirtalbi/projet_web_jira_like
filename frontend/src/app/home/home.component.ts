@@ -1,6 +1,19 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Priority, Project, Task, TaskType } from '../models/task.model';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
+import {
+  BehaviorSubject,
+  distinctUntilChanged,
+  filter,
+  Subject,
+  takeUntil
+} from 'rxjs';
+import { Priority, Task, TaskType } from '../models/task.model';
+import { TaskService } from '../services/task.service';
 
 @Component({
   selector: 'app-home',
@@ -8,19 +21,7 @@ import { Priority, Project, Task, TaskType } from '../models/task.model';
   styleUrl: './home.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class HomeComponent implements OnInit {
-  public projects$: BehaviorSubject<Project[]>;
-
-  public selectedProject$: BehaviorSubject<Project>;
-  get selectedProject(): Project {
-    return this.selectedProject$.getValue();
-  }
-
-  public userSelectedTask$: BehaviorSubject<Task[]>;
-  get userSelectedTask(): Task[] {
-    return this.userSelectedTask$.getValue();
-  }
-
+export class HomeComponent implements OnInit, OnDestroy {
   public currentSelectedProject = null;
   public currentSelectedFilter = null;
 
@@ -35,147 +36,25 @@ export class HomeComponent implements OnInit {
     false
   );
 
-  constructor() {
-    this.projects$ = new BehaviorSubject<Project[]>([]);
-    this.userSelectedTask$ = new BehaviorSubject<Task[]>([]);
-    this.selectedProject$ = new BehaviorSubject<Project>(null);
-  }
+  private ngUnsubscribe$: Subject<void> = new Subject<void>();
+
+  constructor(
+    public taskService: TaskService,
+    private ref: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    // use service
-    this.projects$.next([
-      {
-        id: 1,
-        name: 'Project 1',
-        tasks: [
-          {
-            id: 1,
-            type: TaskType.NewFeature,
-            title: 'project',
-            priority: Priority.High,
-            assignedTo: 1,
-          },
-          {
-            id: 2,
-            type: TaskType.BugFix,
-            title: 'sport',
-            priority: Priority.Medium,
-            assignedTo: 1,
-          },
-          {
-            id: 3,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 1,
-          },
-          {
-            id: 4,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 2,
-          },
-          {
-            id: 5,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 2,
-          },
-          {
-            id: 1,
-            type: TaskType.NewFeature,
-            title: 'project',
-            priority: Priority.High,
-            assignedTo: 1,
-          },
-          {
-            id: 2,
-            type: TaskType.BugFix,
-            title: 'sport',
-            priority: Priority.Medium,
-            assignedTo: 1,
-          },
-          {
-            id: 3,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 1,
-          },
-          {
-            id: 1,
-            type: TaskType.NewFeature,
-            title: 'project',
-            priority: Priority.High,
-            assignedTo: 1,
-          },
-          {
-            id: 2,
-            type: TaskType.BugFix,
-            title: 'sport',
-            priority: Priority.Medium,
-            assignedTo: 1,
-          },
-          {
-            id: 3,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 1,
-          },
-          {
-            id: 1,
-            type: TaskType.NewFeature,
-            title: 'project',
-            priority: Priority.High,
-            assignedTo: 1,
-          },
-          {
-            id: 2,
-            type: TaskType.BugFix,
-            title: 'sport',
-            priority: Priority.Medium,
-            assignedTo: 1,
-          },
-          {
-            id: 3,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 1,
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: 'Project 2',
-        tasks: [
-          {
-            id: 4,
-            type: TaskType.NewFeature,
-            title: 'Work on the project',
-            priority: Priority.High,
-            assignedTo: 1,
-          },
-          {
-            id: 5,
-            type: TaskType.BugFix,
-            title: 'Go to the gym',
-            priority: Priority.Medium,
-            assignedTo: 2,
-          },
-          {
-            id: 6,
-            type: TaskType.Update,
-            title: 'Attend meeting',
-            priority: Priority.Low,
-            assignedTo: 2,
-          },
-        ],
-      },
-    ]);
+    this.taskService.selectedProject$
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        distinctUntilChanged(),
+        filter((project) => project !== null)
+      )
+      .subscribe((project) => {
+        this.currentSelectedProject = project.name;
+        this.onProjectChange(project.id);
+        this.ref.markForCheck();
+      });
   }
 
   public onProjectChange(id: any): void {
@@ -184,55 +63,45 @@ export class HomeComponent implements OnInit {
       return;
     }
     this.disabled$.next(true);
-    const selectedProject = this.projects$
+    const selectedProject = this.taskService.projects$
       .getValue()
       .find((project) => project.id === id);
     const selectedTaskByUser = this.getTaskByUserId(selectedProject.tasks);
-    this.selectedProject$.next(selectedProject);
-    this.userSelectedTask$.next(selectedTaskByUser);
+    this.taskService.selectedProject$.next(selectedProject);
+    this.taskService.userSelectedTask$.next(selectedTaskByUser);
   }
 
   public getIconByTaskType(type: TaskType): string {
-    switch (type) {
-      case TaskType.NewFeature:
-        return 'plus-square';
-      case TaskType.BugFix:
-        return 'bug';
-      case TaskType.Update:
-        return 'reload';
-    }
+    return this.taskService.getIconByTaskType(type);
   }
 
   public getIconByPriority(priority: Priority): string {
-    switch (priority) {
-      case Priority.High:
-        return 'icons:icon-high-priority';
-      case Priority.Medium:
-        return 'icons:icon-medium-priority';
-      case Priority.Low:
-        return 'icons:icon-low-priority';
-    }
+    return this.taskService.getIconByPriority(priority);
   }
 
   public onFilterChange(filter: Priority | TaskType): void {
-    const fullUserTaskList = this.getTaskByUserId(this.selectedProject.tasks);
+    const fullUserTaskList = this.getTaskByUserId(
+      this.taskService.selectedProject.tasks
+    );
     if (typeof filter === 'string') {
       this.filterTasksByType(fullUserTaskList, filter);
     } else if (typeof filter === 'number') {
       this.filterTasksByPriority(fullUserTaskList, filter);
     } else {
-      this.userSelectedTask$.next(fullUserTaskList);
+      this.taskService.userSelectedTask$.next(fullUserTaskList);
     }
   }
 
   private filterTasksByPriority(tasks: Task[], priority: Priority): void {
-    this.userSelectedTask$.next(
+    this.taskService.userSelectedTask$.next(
       tasks.filter((task) => task.priority === priority)
     );
   }
 
   private filterTasksByType(tasks: Task[], type: TaskType): void {
-    this.userSelectedTask$.next(tasks.filter((task) => task.type === type));
+    this.taskService.userSelectedTask$.next(
+      tasks.filter((task) => task.type === type)
+    );
   }
 
   private getTaskByUserId(tasks: Task[]): Task[] {
@@ -241,10 +110,15 @@ export class HomeComponent implements OnInit {
 
   private reset(): void {
     this.disabled$.next(false);
-    this.selectedProject$.next(null);
-    this.userSelectedTask$.next([]);
+    this.taskService.selectedProject$.next(null);
+    this.taskService.userSelectedTask$.next([]);
     this.currentSelectedProject = null;
     this.currentSelectedFilter = null;
     this.searchTerm = '';
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 }

@@ -13,20 +13,24 @@ nz-layout {
 
 nz-content {
   padding: 10px 30px;
+  background: #fff;
 }
-nz-header{
-    padding: 0 !important;
-    background: #fff;
 
+nz-header {
+  padding: 0 !important;
+  background: #fff;
 }
+
 .inner-content {
   background: #fff;
   padding: 24px;
   min-height: 280px;
 }
-.create-btn{
-  margin-inline:15px ;
+
+.create-btn {
+  margin-inline: 15px;
 }
-.avatar{
+
+.avatar {
   margin-right: 15px;
 }

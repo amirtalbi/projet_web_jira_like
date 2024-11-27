@@ -1,0 +1,72 @@
+<div class="project-tab-container">
+  <div class="header-table-container">
+    <h2>Kanban</h2>
+    <button nz-button nzType="primary">Modifier</button>
+  </div>
+  <div class="table-container">
+    <div class="column">
+      <span>A FAIRE</span>
+      <div class="task-list">
+        @for (task of taskService.getSelectedTaskByStatus(TaskStatus.ToDo);
+        track $index) {
+        <div class="card">
+          <span
+            nz-icon
+            [nzType]="getIconByTaskType(task.type)"
+            nzTheme="outline"
+          ></span>
+          <span>{{ task.title }}</span>
+          <span
+            nz-icon
+            [nzType]="getIconByPriority(task.priority)"
+            nzTheme="outline"
+          ></span>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="column">
+      <span>EN COURS</span>
+      <div class="task-list">
+        @for (task of
+        taskService.getSelectedTaskByStatus(TaskStatus.InProgress); track
+        $index) {
+        <div class="card">
+          <span
+            nz-icon
+            [nzType]="getIconByTaskType(task.type)"
+            nzTheme="outline"
+          ></span>
+          <span>{{ task.title }}</span>
+          <span
+            nz-icon
+            [nzType]="getIconByPriority(task.priority)"
+            nzTheme="outline"
+          ></span>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="column">
+      <span>TERMINER</span>
+      <div class="task-list">
+        @for (task of taskService.getSelectedTaskByStatus(TaskStatus.Done);
+        track $index) {
+        <div class="card">
+          <span
+            nz-icon
+            [nzType]="getIconByTaskType(task.type)"
+            nzTheme="outline"
+          ></span>
+          <span>{{ task.title }}</span>
+          <span
+            nz-icon
+            [nzType]="getIconByPriority(task.priority)"
+            nzTheme="outline"
+          ></span>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
