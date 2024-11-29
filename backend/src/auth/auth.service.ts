@@ -15,7 +15,7 @@ export class AuthService {
 
   async register(
     createUserDto: CreateUserDto,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<{ accessToken: string, userId: string }> {
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const user = await this.usersService.create({
       ...createUserDto,
@@ -23,7 +23,7 @@ export class AuthService {
     });
     const payload = { sub: user._id, email: user.email };
     const accessToken = this.jwtService.sign(payload);
-    return { accessToken };
+    return { accessToken, userId: user._id.toString() };
   }
 
   async login(loginDto: LoginDto): Promise<{ accessToken: string, userId: string }> {
