@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
-import { Router, NavigationEnd } from '@angular/router';
-import { AuthService } from './auth.service';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -39,6 +39,19 @@ export class AuthComponent {
 
 
     if (this.isRegister) {
+        const { avatar,username, password } = this.validateForm.value;
+        if (avatar && username && password) {
+          this.authService.register(
+            avatar,
+            username,
+            password
+          ).subscribe({
+            next: () => {
+              this.router.navigate(['/home']);
+            },
+            error: (err) => console.error('Erreur de connexion', err),
+          });
+        }
     } else {
         const { username, password } = this.validateForm.value;
         if (username && password) {

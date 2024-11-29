@@ -23,7 +23,13 @@
         </ul>
       </div>
       <div nz-col nzAlign="middle">
-        <button nz-button class="btn-primary create-btn">Créer</button>
+        <button
+          nz-button
+          class="btn-primary create-btn"
+          (click)="createComponentModal()"
+        >
+          Créer
+        </button>
         <nz-avatar
           nzSize="large"
           src="../assets/img/avatar.jpg"
