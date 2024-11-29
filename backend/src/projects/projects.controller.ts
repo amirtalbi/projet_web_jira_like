@@ -33,6 +33,15 @@ export class ProjectsController {
     return this.projectsService.findOne(id);
   }
 
+  @Get('user/:userId')
+  @ApiOperation({ summary: 'Get projects by user ID' })
+  @ApiResponse({ status: 200, description: 'Projects retrieved successfully.', type: [Project] })
+  @ApiResponse({ status: 404, description: 'Projects not found.' })
+  @ApiParam({ name: 'userId', description: 'User ID' })
+  findByUserId(@Param('userId') userId: string): Promise<Project[]> {
+    return this.projectsService.findByUser(userId);
+  }
+
   @Put(':id')
   @ApiOperation({ summary: 'Update a project by ID' })
   @ApiResponse({ status: 200, description: 'Project updated successfully.', type: Project })

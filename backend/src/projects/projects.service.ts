@@ -28,6 +28,10 @@ export class ProjectsService {
     return project;
   }
 
+  async findByUser(userId: string): Promise<Project[]> {
+    return this.projectModel.find({ userId }).exec();
+  }
+
   async update(id: string, updateProjectDto: UpdateProjectDto): Promise<Project> {
     const updatedProject = await this.projectModel.findByIdAndUpdate(id, updateProjectDto, { new: true }).exec();
     if (!updatedProject) {
