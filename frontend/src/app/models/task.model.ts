@@ -2,6 +2,11 @@ export interface Project {
   id: number;
   name: string;
   tasks: Task[];
+  description?: string;
+  ownerId?: string;
+  members?: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Task {
@@ -9,8 +14,12 @@ export interface Task {
   type: TaskType;
   title: string;
   priority: Priority;
-  assignedTo: number;
+  assignedTo: string;
   status: TaskStatus;
+  description?: string;
+  dueDate?: string;
+  tags?: string[];
+  projectId?: string;
 }
 
 export enum TaskType {

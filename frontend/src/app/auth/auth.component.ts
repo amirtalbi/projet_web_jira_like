@@ -26,7 +26,7 @@ export class AuthComponent {
 
   validateForm = this.fb.group({
     email: this.fb.control('', [Validators.required]),
-    username: this.fb.control('', [Validators.required]),
+    username: this.fb.control('', this.isRegister ? [Validators.required] : []),
     password: this.fb.control('', [Validators.required]),
   });
 
@@ -46,9 +46,9 @@ export class AuthComponent {
         });
       }
     } else {
-      const { username, password } = this.validateForm.value;
-      if (username && password) {
-        this.authService.login(username, password).subscribe({
+      const { email, password } = this.validateForm.value;
+      if (email && password) {
+        this.authService.login(email, password).subscribe({
           next: () => {
             this.router.navigate(['/home']);
           },

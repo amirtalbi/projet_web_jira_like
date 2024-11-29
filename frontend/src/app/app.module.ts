@@ -27,12 +27,12 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { AuthComponent } from './auth/auth.component';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { ProjectTabsComponent } from './project-tabs/project-tabs.component';
-import { ProjectComponent } from './project/project.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
 
 registerLocaleData(fr);
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, FilterTasksPipe, AuthComponent, CreateTaskComponent, ProjectComponent, ProjectTabsComponent],
+  declarations: [AppComponent, HomeComponent, FilterTasksPipe, AuthComponent, CreateTaskComponent, ProjectTabsComponent, CreateProjectComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

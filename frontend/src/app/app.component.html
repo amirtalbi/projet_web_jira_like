@@ -9,7 +9,8 @@
             <ul>
               <li nz-menu-group nzTitle="Sélectionner">
                 <ul>
-                  @for (project of taskService.projects$ | async; track $index)
+                  <li nz-menu-item (click)="createProjectComponentModal()">creer un Projet</li>
+                  @for (project of projectList; track $index)
                   {
                   <li nz-menu-item (click)="updateSelectedProject(project)">
                     {{ project.name }}

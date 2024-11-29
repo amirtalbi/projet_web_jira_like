@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {
   Priority,
   Project,
@@ -7,12 +7,27 @@ import {
   TaskStatus,
   TaskType,
 } from '../models/task.model';
+import { AuthService } from '../auth/auth.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
+  private apiUrl = 'http://localhost:3000/tasks';
+  private token: string;
   public projects$: BehaviorSubject<Project[]>;
+
+
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+  }
+  createTask(task: Task): Observable<any> { 
+    return this.http.post<any>(this.apiUrl, task, { headers: this.getHeaders() }); 
+  }
+
   get projects(): Project[] {
     return this.projects$.getValue();
   }
@@ -48,165 +63,166 @@ export class TaskService {
     this.projectTaskFiltered$.next(project);
   }
 
-  private userId = 1;
+  // private userId = 1;
 
-  constructor() {
+  constructor(private http: HttpClient,private authService: AuthService) {
+    this.token = this.authService.getToken();
     this.projects$ = new BehaviorSubject<Project[]>([]);
     this.userSelectedTask$ = new BehaviorSubject<Task[]>([]);
     this.selectedProject$ = new BehaviorSubject<Project>(null);
     this.projectTaskFiltered$ = new BehaviorSubject<Project>(null);
 
     // use service
-    this.projects$.next([
-      {
-        id: 1,
-        name: 'Project 1',
-        tasks: [
-          {
-            id: 1,
-            type: TaskType.NewFeature,
-            title: 'project',
-            priority: Priority.High,
-            assignedTo: 1,
-            status: TaskStatus.ToDo,
-          },
-          {
-            id: 2,
-            type: TaskType.BugFix,
-            title: 'sport',
-            priority: Priority.Medium,
-            assignedTo: 1,
-            status: TaskStatus.InProgress,
-          },
-          {
-            id: 3,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 1,
-            status: TaskStatus.Done,
-          },
-          {
-            id: 4,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 2,
-            status: TaskStatus.ToDo,
-          },
-          {
-            id: 5,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 2,
-            status: TaskStatus.InProgress,
-          },
-          {
-            id: 1,
-            type: TaskType.NewFeature,
-            title: 'project',
-            priority: Priority.High,
-            assignedTo: 1,
-            status: TaskStatus.ToDo,
-          },
-          {
-            id: 2,
-            type: TaskType.BugFix,
-            title: 'sport',
-            priority: Priority.Medium,
-            assignedTo: 1,
-            status: TaskStatus.InProgress,
-          },
-          {
-            id: 3,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 1,
-            status: TaskStatus.Done,
-          },
-          {
-            id: 1,
-            type: TaskType.NewFeature,
-            title: 'project',
-            priority: Priority.High,
-            assignedTo: 1,
-            status: TaskStatus.ToDo,
-          },
-          {
-            id: 2,
-            type: TaskType.BugFix,
-            title: 'sport',
-            priority: Priority.Medium,
-            assignedTo: 1,
-            status: TaskStatus.InProgress,
-          },
-          {
-            id: 3,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 1,
-            status: TaskStatus.Done,
-          },
-          {
-            id: 1,
-            type: TaskType.NewFeature,
-            title: 'project',
-            priority: Priority.High,
-            assignedTo: 1,
-            status: TaskStatus.ToDo,
-          },
-          {
-            id: 2,
-            type: TaskType.BugFix,
-            title: 'sport',
-            priority: Priority.Medium,
-            assignedTo: 1,
-            status: TaskStatus.InProgress,
-          },
-          {
-            id: 3,
-            type: TaskType.Update,
-            title: 'meeting',
-            priority: Priority.Low,
-            assignedTo: 1,
-            status: TaskStatus.Done,
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: 'Project 2',
-        tasks: [
-          {
-            id: 4,
-            type: TaskType.NewFeature,
-            title: 'Work on the project',
-            priority: Priority.High,
-            assignedTo: 1,
-            status: TaskStatus.ToDo,
-          },
-          {
-            id: 5,
-            type: TaskType.BugFix,
-            title: 'Go to the gym',
-            priority: Priority.Medium,
-            assignedTo: 2,
-            status: TaskStatus.InProgress,
-          },
-          {
-            id: 6,
-            type: TaskType.Update,
-            title: 'Attend meeting',
-            priority: Priority.Low,
-            assignedTo: 2,
-            status: TaskStatus.Done,
-          },
-        ],
-      },
-    ]);
+    // this.projects$.next([
+    //   {
+    //     id: 1,
+    //     name: 'Project 1',
+    //     tasks: [
+    //       {
+    //         id: 1,
+    //         type: TaskType.NewFeature,
+    //         title: 'project',
+    //         priority: Priority.High,
+    //         assignedTo: 1,
+    //         status: TaskStatus.ToDo,
+    //       },
+    //       {
+    //         id: 2,
+    //         type: TaskType.BugFix,
+    //         title: 'sport',
+    //         priority: Priority.Medium,
+    //         assignedTo: 1,
+    //         status: TaskStatus.InProgress,
+    //       },
+    //       {
+    //         id: 3,
+    //         type: TaskType.Update,
+    //         title: 'meeting',
+    //         priority: Priority.Low,
+    //         assignedTo: 1,
+    //         status: TaskStatus.Done,
+    //       },
+    //       {
+    //         id: 4,
+    //         type: TaskType.Update,
+    //         title: 'meeting',
+    //         priority: Priority.Low,
+    //         assignedTo: 2,
+    //         status: TaskStatus.ToDo,
+    //       },
+    //       {
+    //         id: 5,
+    //         type: TaskType.Update,
+    //         title: 'meeting',
+    //         priority: Priority.Low,
+    //         assignedTo: 2,
+    //         status: TaskStatus.InProgress,
+    //       },
+    //       {
+    //         id: 1,
+    //         type: TaskType.NewFeature,
+    //         title: 'project',
+    //         priority: Priority.High,
+    //         assignedTo: 1,
+    //         status: TaskStatus.ToDo,
+    //       },
+    //       {
+    //         id: 2,
+    //         type: TaskType.BugFix,
+    //         title: 'sport',
+    //         priority: Priority.Medium,
+    //         assignedTo: 1,
+    //         status: TaskStatus.InProgress,
+    //       },
+    //       {
+    //         id: 3,
+    //         type: TaskType.Update,
+    //         title: 'meeting',
+    //         priority: Priority.Low,
+    //         assignedTo: 1,
+    //         status: TaskStatus.Done,
+    //       },
+    //       {
+    //         id: 1,
+    //         type: TaskType.NewFeature,
+    //         title: 'project',
+    //         priority: Priority.High,
+    //         assignedTo: 1,
+    //         status: TaskStatus.ToDo,
+    //       },
+    //       {
+    //         id: 2,
+    //         type: TaskType.BugFix,
+    //         title: 'sport',
+    //         priority: Priority.Medium,
+    //         assignedTo: 1,
+    //         status: TaskStatus.InProgress,
+    //       },
+    //       {
+    //         id: 3,
+    //         type: TaskType.Update,
+    //         title: 'meeting',
+    //         priority: Priority.Low,
+    //         assignedTo: 1,
+    //         status: TaskStatus.Done,
+    //       },
+    //       {
+    //         id: 1,
+    //         type: TaskType.NewFeature,
+    //         title: 'project',
+    //         priority: Priority.High,
+    //         assignedTo: 1,
+    //         status: TaskStatus.ToDo,
+    //       },
+    //       {
+    //         id: 2,
+    //         type: TaskType.BugFix,
+    //         title: 'sport',
+    //         priority: Priority.Medium,
+    //         assignedTo: 1,
+    //         status: TaskStatus.InProgress,
+    //       },
+    //       {
+    //         id: 3,
+    //         type: TaskType.Update,
+    //         title: 'meeting',
+    //         priority: Priority.Low,
+    //         assignedTo: 1,
+    //         status: TaskStatus.Done,
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     id: 2,
+    //     name: 'Project 2',
+    //     tasks: [
+    //       {
+    //         id: 4,
+    //         type: TaskType.NewFeature,
+    //         title: 'Work on the project',
+    //         priority: Priority.High,
+    //         assignedTo: 1,
+    //         status: TaskStatus.ToDo,
+    //       },
+    //       {
+    //         id: 5,
+    //         type: TaskType.BugFix,
+    //         title: 'Go to the gym',
+    //         priority: Priority.Medium,
+    //         assignedTo: 2,
+    //         status: TaskStatus.InProgress,
+    //       },
+    //       {
+    //         id: 6,
+    //         type: TaskType.Update,
+    //         title: 'Attend meeting',
+    //         priority: Priority.Low,
+    //         assignedTo: 2,
+    //         status: TaskStatus.Done,
+    //       },
+    //     ],
+    //   },
+    // ]);
   }
 
   public getSelectedTaskByStatus(status: TaskStatus): Task[] {
@@ -242,6 +258,6 @@ export class TaskService {
   }
 
   public getTaskByUserId(tasks: Task[]): Task[] {
-    return tasks.filter((task) => task.assignedTo === this.userId);
+    return tasks.filter((task) => task.assignedTo === this.authService.getCurrentUserId());
   }
 }

@@ -14,6 +14,7 @@ import {
 } from 'rxjs';
 import { Priority, Task, TaskType } from '../models/task.model';
 import { TaskService } from '../services/task.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -40,7 +41,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     public taskService: TaskService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -106,7 +108,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private getTaskByUserId(tasks: Task[]): Task[] {
-    return tasks.filter((task) => task.assignedTo === this.userId);
+    return tasks.filter((task) => task.assignedTo === this.authService.getCurrentUserId());
   }
 
   private reset(): void {

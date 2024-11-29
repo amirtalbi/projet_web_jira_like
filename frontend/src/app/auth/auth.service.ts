@@ -9,7 +9,7 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   private readonly apiUrl = 'http://localhost:3000/auth';
   private readonly tokenKey = 'accessToken';
-  private currentUserId: string;
+  private userId = "userId";
   public isAuth = false;
 
   constructor(private readonly http: HttpClient, private router: Router) {
@@ -41,8 +41,8 @@ export class AuthService {
       .post<any>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         tap((response) => {
-          this.setLocalStorageItem(this.tokenKey, response.token);
-          this.currentUserId = response.userId; 
+          this.setLocalStorageItem(this.tokenKey, response.accessToken);
+          this.setLocalStorageItem(this.userId, response.userId);
           this.isAuth = true;
         })
       );
@@ -53,8 +53,8 @@ export class AuthService {
       .post<any>(`${this.apiUrl}/register`, { username, email, password })
       .pipe(
         tap((response) => {
-          this.setLocalStorageItem(this.tokenKey, response.token);
-          this.currentUserId = response.userId; 
+          this.setLocalStorageItem(this.tokenKey, response.accessToken);
+          this.setLocalStorageItem(this.userId, response.userId);
           this.isAuth = true;
         })
       );
@@ -62,8 +62,15 @@ export class AuthService {
 
   logout(): void {
     this.removeLocalStorageItem(this.tokenKey);
-    this.currentUserId = null;
+    this.removeLocalStorageItem(this.userId);
     this.isAuth = false;
     this.router.navigate(['/login']);
+  }
+
+  getToken(): string {
+    return this.getLocalStorageItem(this.tokenKey);
+  }
+  getCurrentUserId(): string {
+    return this.getLocalStorageItem(this.userId);
   }
 }

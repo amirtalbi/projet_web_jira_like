@@ -14,7 +14,11 @@
         </div>
         <div class="row position-left">
           <label for="type">Type</label>
-          <input type="text" id="type" [(ngModel)]="task.type" class="input" required />
+          <select [(ngModel)]="task.type" class="input">
+                <option value="NewFeature">Nouvelle fonctionnalité</option>
+                <option value="BugFix">Correction de bug</option>
+                <option value="Update">Mise à jour</option>
+            </select>
         </div>
       </div>
         <div class="row position-left">
@@ -26,10 +30,10 @@
       <div>
         <div class="state-button">
             <label>Statut</label>
-            <select [(ngModel)]="task.priority" class="input">
-                <option value="Open">ouvert</option>
-                <option value="ongoing">Encours</option>
-                <option value="done">Terminié</option>
+            <select [(ngModel)]="task.status" class="input">
+                <option value="ToDo">ouvert</option>
+                <option value="InProgress">Encours</option>
+                <option value="Done">Terminié</option>
             </select>
         </div>
         <div class="row position-left">
@@ -52,7 +56,7 @@
         </div>
         <div>
           <label for="tags">Tags</label>
-          <input type="text" id="tags" [(ngModel)]="task.tagsString" (blur)="updateTags()" placeholder="Séparez par des virgules" class="input col-5" />
+          <input type="text" id="tags" [(ngModel)]="tagsString" (blur)="updateTags()" placeholder="Séparez par des virgules" class="input col-5" />
         </div>
         <div>
           <label for="dueDate">Date d'échéance</label>
