@@ -88,6 +88,16 @@ GET /projects
 | :-------- | :------- | :-------------------- |
 | None      |          | Renvoie tous les projets. |
 
+#### Obtenir tous les projets pour un utilisateur
+
+```http
+GET /projects/user/{userId}
+```
+
+| Parameter | Type     | Description           |
+| :-------- | :------- | :-------------------- |
+| userId      |      string    | Renvoie tous les projets de l'utilisateur donné. |
+
 #### Obtenir un projet par ID
 
 ```http
