@@ -55,4 +55,9 @@ export class AppComponent {
       nzFooter: null,
     });
   }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
+  }
 }

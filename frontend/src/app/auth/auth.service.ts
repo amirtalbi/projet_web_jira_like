@@ -9,6 +9,7 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   private readonly apiUrl = 'http://localhost:3000/auth';
   private readonly tokenKey = 'accessToken';
+  private currentUserId: string;
   public isAuth = false;
 
   constructor(private readonly http: HttpClient, private router: Router) {
@@ -41,17 +42,19 @@ export class AuthService {
       .pipe(
         tap((response) => {
           this.setLocalStorageItem(this.tokenKey, response.token);
+          this.currentUserId = response.userId; 
           this.isAuth = true;
         })
       );
   }
 
-  register(username: string, email: string, password: string): Observable<any> {
+  register(email: string, username: string, password: string): Observable<any> {
     return this.http
       .post<any>(`${this.apiUrl}/register`, { username, email, password })
       .pipe(
         tap((response) => {
           this.setLocalStorageItem(this.tokenKey, response.token);
+          this.currentUserId = response.userId; 
           this.isAuth = true;
         })
       );
@@ -59,6 +62,7 @@ export class AuthService {
 
   logout(): void {
     this.removeLocalStorageItem(this.tokenKey);
+    this.currentUserId = null;
     this.isAuth = false;
     this.router.navigate(['/login']);
   }
