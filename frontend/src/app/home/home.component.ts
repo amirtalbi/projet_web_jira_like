@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Priority, Project, Task, TaskType } from '../models/task.model';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -35,13 +36,15 @@ export class HomeComponent implements OnInit {
     false
   );
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.projects$ = new BehaviorSubject<Project[]>([]);
     this.userSelectedTask$ = new BehaviorSubject<Task[]>([]);
     this.selectedProject$ = new BehaviorSubject<Project>(null);
   }
 
   ngOnInit(): void {
+    console.log('HomeComponent',this.authService.isAuth);
+
     // use service
     this.projects$.next([
       {

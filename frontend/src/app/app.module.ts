@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import fr from '@angular/common/locales/fr';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,6 +14,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -23,13 +24,18 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { AuthComponent } from './auth/auth.component';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { CreateTaskComponent } from './create-task/create-task.component';
+import { ProjectComponent } from './project/project.component';
 
 registerLocaleData(fr);
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, FilterTasksPipe, AuthComponent],
+  declarations: [AppComponent, HomeComponent, FilterTasksPipe, AuthComponent, CreateTaskComponent, ProjectComponent],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     NzLayoutModule,
@@ -42,13 +48,14 @@ registerLocaleData(fr);
     NzInputModule,
     NzButtonModule,
     NzAvatarModule,
-    FormsModule
+    NzModalModule,
+    NzDropDownModule
   ],
   providers: [
+    provideHttpClient(withFetch()),
     provideClientHydration(),
     { provide: NZ_I18N, useValue: fr_FR },
     provideAnimationsAsync(),
-    provideHttpClient(),
   ],
   bootstrap: [AppComponent],
 })

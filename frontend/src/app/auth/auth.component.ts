@@ -29,7 +29,6 @@ export class AuthComponent {
     avatar: this.fb.control(''),
     username: this.fb.control('', [Validators.required]),
     password: this.fb.control('', [Validators.required]),
-    remember: this.fb.control(true)
   });
 
   submitForm(): void {
@@ -39,6 +38,19 @@ export class AuthComponent {
 
 
     if (this.isRegister) {
+        const { avatar,username, password } = this.validateForm.value;
+        if (avatar && username && password) {
+          this.authService.register(
+            avatar,
+            username,
+            password
+          ).subscribe({
+            next: () => {
+              this.router.navigate(['/home']);
+            },
+            error: (err) => console.error('Erreur de connexion', err),
+          });
+        }
     } else {
         const { username, password } = this.validateForm.value;
         if (username && password) {
