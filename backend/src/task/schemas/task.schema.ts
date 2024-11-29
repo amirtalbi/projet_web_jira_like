@@ -38,6 +38,10 @@ export class Task {
   @Prop()
   dueDate: Date;
 
+  @ApiProperty({ description: 'Parent task ID', type: String, required: false })
+  @Prop({ type: Types.ObjectId, ref: 'Task' })
+  parent: Types.ObjectId;
+
   @ApiProperty({ description: 'Creation date of the task', readOnly: true })
   @Prop({ default: Date.now })
   createdAt: Date;
