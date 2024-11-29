@@ -42,6 +42,10 @@ export class Task {
   @Prop({ type: Types.ObjectId, ref: 'Task' })
   parent: Types.ObjectId;
 
+  @ApiProperty({ description: 'Subtasks associated with the task', type: [String], required: false })
+  @Prop({ type: [Types.ObjectId], ref: 'Task' })
+  children?: Task[];
+
   @ApiProperty({ description: 'Creation date of the task', readOnly: true })
   @Prop({ default: Date.now })
   createdAt: Date;
@@ -49,6 +53,7 @@ export class Task {
   @ApiProperty({ description: 'Last update date of the task', readOnly: true })
   @Prop({ default: Date.now })
   updatedAt: Date;
+ _id: any;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

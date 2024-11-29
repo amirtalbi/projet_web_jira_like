@@ -4,6 +4,7 @@ import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './schemas/task.schema';
+import { Types } from 'mongoose';
 
 @Controller('tasks')
 export class TaskController {
