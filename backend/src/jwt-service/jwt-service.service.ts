@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class JwtService {
-  private readonly secret = 'your_secret_key';
+  private readonly secret = process.env.JWT_SECRET;
 
   sign(payload: object): string {
     return jwt.sign(payload, this.secret, { expiresIn: '1h' });
