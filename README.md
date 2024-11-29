@@ -96,7 +96,7 @@ GET /projects/user/{userId}
 
 | Parameter | Type     | Description           |
 | :-------- | :------- | :-------------------- |
-| userId      |      string    | Renvoie tous les projets de l'utilisateur donné. |
+| `userId`      |      `string`    | Renvoie tous les projets de l'utilisateur donné. |
 
 #### Obtenir un projet par ID
 
