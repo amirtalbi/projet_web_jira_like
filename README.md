@@ -91,7 +91,7 @@ GET /projects
 #### Obtenir tous les projets pour un utilisateur
 
 ```http
-GET /projects/user/{userId}
+GET /projects/user/${userId}
 ```
 
 | Parameter | Type     | Description           |
