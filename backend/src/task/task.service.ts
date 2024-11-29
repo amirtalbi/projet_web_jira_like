@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Task, TaskDocument } from './schemas/task.schema';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -65,5 +65,36 @@ export class TaskService {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
     return deletedTask;
+  }
+
+  async getTaskTree(projectId: Types.ObjectId): Promise<Task[]> {
+    const tasks = await this.taskModel.find({ projectId }).exec();
+    return this.buildTaskTree(tasks);
+  }
+
+  private buildTaskTree(tasks: Task[]): Task[] {
+    const taskMap = new Map<string, Task>();
+
+    tasks.forEach(task => {
+      taskMap.set(task._id.toString(), task);
+    });
+
+    const taskTree: Task[] = [];
+
+    tasks.forEach(task => {
+      if (task.parent) {
+        const parentTask = taskMap.get(task.parent.toString());
+        if (parentTask) {
+          if (!parentTask.children) {
+            parentTask.children = [];
+          }
+          parentTask.children.push(task);
+        }
+      } else {
+        taskTree.push(task);
+      }
+    });
+
+    return taskTree;
   }
 }

@@ -33,8 +33,6 @@ export class TaskController {
     return this.taskService.findOne(id);
   }
 
-
-  
   @Put(':id')
   @ApiOperation({ summary: 'Update a task by ID' })
   @ApiResponse({ status: 200, description: 'Task updated successfully.', type: Task })
@@ -51,5 +49,13 @@ export class TaskController {
   @ApiParam({ name: 'id', description: 'Task ID' })
   remove(@Param('id') id: string): Promise<Task> {
     return this.taskService.remove(id);
+  }
+
+  @Get('project/:projectId/tree')
+  @ApiOperation({ summary: 'Get task tree by project ID' })
+  @ApiResponse({ status: 200, description: 'Task tree retrieved successfully.', type: [Task] })
+  @ApiParam({ name: 'projectId', description: 'Project ID' })
+  getTaskTree(@Param('projectId') projectId: string): Promise<Task[]> {
+    return this.taskService.getTaskTree(new Types.ObjectId(projectId));
   }
 }
